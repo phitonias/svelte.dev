@@ -263,4 +263,94 @@ function read(asset: string): Response;
 
 
 
+## query
+
+<div class="ts-block">
+
+```dts
+namespace query {
+	/**
+	 * Creates a batch query function that collects multiple calls and executes them in a single request
+	 *
+	 * See [Remote functions](https://svelte.dev/docs/kit/remote-functions#query.batch) for full documentation.
+	 *
+	 * @since 2.35
+	 */
+	function batch<Input, Output>(
+		validate: 'unchecked',
+		fn: (
+			args: Input[]
+		) => MaybePromise<(arg: Input, idx: number) => Output>
+	): RemoteQueryFunction<Input, Output>;
+	/**
+	 * Creates a batch query function that collects multiple calls and executes them in a single request
+	 *
+	 * See [Remote functions](https://svelte.dev/docs/kit/remote-functions#query.batch) for full documentation.
+	 *
+	 * @since 2.35
+	 */
+	function batch<Schema extends StandardSchemaV1, Output>(
+		schema: Schema,
+		fn: (
+			args: StandardSchemaV1.InferOutput<Schema>[]
+		) => MaybePromise<
+			(
+				arg: StandardSchemaV1.InferOutput<Schema>,
+				idx: number
+			) => Output
+		>
+	): RemoteQueryFunction<
+		StandardSchemaV1.InferInput<Schema>,
+		Output
+	>;
+	/**
+	 * Creates a streaming remote query. When called from the browser, the generator function will be invoked on the server and values will be streamed via Server-Sent Events.
+	 *
+	 * See [Remote functions](https://svelte.dev/docs/kit/remote-functions#query.stream) for full documentation.
+	 *
+	 * @since 2.36
+	 */
+	function stream<Output>(
+		fn: () =>
+			| Generator<Output, void, unknown>
+			| AsyncGenerator<Output, void, unknown>
+	): RemoteQueryStreamFunction<void, Output>;
+	/**
+	 * Creates a streaming remote query. When called from the browser, the generator function will be invoked on the server and values will be streamed via Server-Sent Events.
+	 *
+	 * See [Remote functions](https://svelte.dev/docs/kit/remote-functions#query.stream) for full documentation.
+	 *
+	 * @since 2.36
+	 */
+	function stream<Input, Output>(
+		validate: 'unchecked',
+		fn: (
+			arg: Input
+		) =>
+			| Generator<Output, void, unknown>
+			| AsyncGenerator<Output, void, unknown>
+	): RemoteQueryStreamFunction<Input, Output>;
+	/**
+	 * Creates a streaming remote query. When called from the browser, the generator function will be invoked on the server and values will be streamed via Server-Sent Events.
+	 *
+	 * See [Remote functions](https://svelte.dev/docs/kit/remote-functions#query.stream) for full documentation.
+	 *
+	 * @since 2.36
+	 */
+	function stream<Schema extends StandardSchemaV1, Output>(
+		schema: Schema,
+		fn: (
+			arg: StandardSchemaV1.InferOutput<Schema>
+		) =>
+			| Generator<Output, void, unknown>
+			| AsyncGenerator<Output, void, unknown>
+	): RemoteQueryStreamFunction<
+		StandardSchemaV1.InferInput<Schema>,
+		Output
+	>;
+}
+```
+
+</div>
+
 
