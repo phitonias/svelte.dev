@@ -2331,20 +2331,6 @@ type RemoteForm<
 	for(
 		key: string | number | boolean
 	): Omit<RemoteForm<Input, Output>, 'for'>;
-	/**
-	 * This method exists to allow you to typecheck `name` attributes. It returns its argument
-	 * @example
-	 * ```svelte
-	 * <input name={login.field('username')} />
-	 * ```
-	 **/
-	field<
-		Name extends keyof UnionToIntersection<
-			FlattenKeys<Input, ''>
-		>
-	>(
-		string: Name
-	): Name;
 	/** Preflight checks */
 	preflight(
 		schema: StandardSchemaV1<Input, any>
@@ -2352,21 +2338,13 @@ type RemoteForm<
 	/** Validate the form contents programmatically */
 	validate(options?: {
 		includeUntouched?: boolean;
-		/** Perform validation as if the form was submitted by the given button. */
-		submitter?: HTMLButtonElement | HTMLInputElement;
 	}): Promise<void>;
 	/** The result of the form submission */
 	get result(): Output | undefined;
 	/** The number of pending submissions */
 	get pending(): number;
-	/** The submitted values */
-	input: null | UnionToIntersection<
-		FlattenInput<Input, ''>
-	>;
-	/** Validation issues */
-	issues: null | UnionToIntersection<
-		FlattenIssues<Input, ''>
-	>;
+	/** Access form fields using object notation */
+	fields: Input extends void ? never : FormFields<Input>;
 	/** Spread this onto a `<button>` or `<input type="submit">` */
 	buttonProps: {
 		type: 'submit';
@@ -2411,7 +2389,7 @@ interface RemoteFormInput {/*…*/}
 <div class="ts-block-property">
 
 ```dts
-[key: string]: FormDataEntryValue | FormDataEntryValue[] | RemoteFormInput | RemoteFormInput[];
+[key: string]: MaybeArray<string | number | boolean | File | RemoteFormInput>;
 ```
 
 <div class="ts-block-property-details"></div>
@@ -2424,24 +2402,6 @@ interface RemoteFormInput {/*…*/}
 ```dts
 interface RemoteFormIssue {/*…*/}
 ```
-
-<div class="ts-block-property">
-
-```dts
-name: string;
-```
-
-<div class="ts-block-property-details"></div>
-</div>
-
-<div class="ts-block-property">
-
-```dts
-path: Array<string | number>;
-```
-
-<div class="ts-block-property-details"></div>
-</div>
 
 <div class="ts-block-property">
 
